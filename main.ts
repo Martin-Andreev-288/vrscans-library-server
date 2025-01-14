@@ -1,5 +1,6 @@
 import jsonServer from 'npm:json-server@0.17.4';
 import data from "./data.json" with { type: "json" };
+import cors from "npm:cors";
 
 const server = jsonServer.create()
 
@@ -11,6 +12,7 @@ const server = jsonServer.create()
 const router = jsonServer.router(data)
 
 server.use(router)
+server.use(cors())
 server.listen(3000, () => {
     console.log('JSON Server is running')
 })
