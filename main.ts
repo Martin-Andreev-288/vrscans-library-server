@@ -1,10 +1,10 @@
+/// <reference types="npm:@types/qs" />
 // @ts-types="npm:@types/json-server@0.14.7"
 import jsonServer from 'npm:json-server@0.17.4';
 import auth from 'npm:json-server-auth@2.1.0';
 import data from "./data.json" with { type: "json" };
 // @ts-types="npm:@types/express@4.17.21"
 import 'npm:express@4.17.1';
-import QueryString from '../../../AppData/Local/deno/npm/registry.npmjs.org/@types/qs/6.9.18/index.d.ts';
 
 const server = jsonServer.create()
 
@@ -25,7 +25,7 @@ const rules = (auth as any).rewriter({
 (server as any).db = router.db
 
 
-function readNumberQueryParam(name: string, query: QueryString.ParsedQs): Set<number> {
+function readNumberQueryParam(name: string, query: qs.ParsedQs): Set<number> {
     if (!query[name]) return new Set();
     const elements = Array.isArray(query[name]) ? query[name] : [query[name]];
     const numberElements = elements.map((color) => parseInt(color as string));
