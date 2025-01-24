@@ -58,7 +58,18 @@ server.get('/searchVrscans', (req, res) => {
     const materials = readNumberQueryParam('materials', req.query);
     const tags = readNumberQueryParam('tags', req.query);
     const filteredVrScans = filterVrscans(data.vrscans, { colors, materials, tags });
-    res.send(filteredVrScans);
+
+    let page = 1;
+    const pageParam = req.query.page;
+
+    page = (isNaN(page) || page < 1) ? 1 : parseInt(pageParam as string, 10);
+
+    const perPage = 20;
+    const start = (page - 1) * perPage;
+    const end = start + perPage;
+
+    const paginatedResults = filteredVrScans.slice(start, end);
+    res.send(paginatedResults);
 })
 server.use(router)
 
