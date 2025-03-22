@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 /// <reference types="npm:@types/qs" />
 // @ts-types="npm:@types/json-server@0.14.7"
 import jsonServer from 'npm:json-server@0.17.4';
@@ -28,7 +29,7 @@ const rules = (auth as any).rewriter({
 function readNumberQueryParam(name: string, query: qs.ParsedQs): Set<number> {
     if (!query[name]) return new Set();
     const elements = Array.isArray(query[name]) ? query[name] : [query[name]];
-    const numberElements = elements.map((color) => parseInt(color as string));
+    const numberElements = elements.map((el) => parseInt(el as string));
     return new Set(numberElements);
 }
 
@@ -45,7 +46,7 @@ const filterVrscans = (vrscans: typeof data.vrscans, query: { colors: Set<number
         return acceptsMaterials && acceptsColors && acceptsTags;
     });
 
-server.use((req, res, next) => {
+server.use((_req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*'); // Allow any origin
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
