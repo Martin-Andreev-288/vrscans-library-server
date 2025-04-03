@@ -54,11 +54,21 @@ server.use((_req, res, next) => {
 });
 server.use(rules)
 server.use(auth)
+
 server.get('/searchVrscans', (req, res) => {
     const colors = readNumberQueryParam('colors', req.query);
     const materials = readNumberQueryParam('materials', req.query);
     const tags = readNumberQueryParam('tags', req.query);
-    const filteredVrScans = filterVrscans(data.vrscans, { colors, materials, tags });
+    const searchTerm = req.query.search?.toString().toLowerCase() || '';
+
+    let filteredVrScans = filterVrscans(data.vrscans, { colors, materials, tags });
+
+    // Add search filtering
+    if (searchTerm) {
+        filteredVrScans = filteredVrScans.filter(vrscan =>
+            vrscan.name.toLowerCase().includes(searchTerm)
+        );
+    }
 
     let page = 1;
     const pageParam = req.query.page;
@@ -71,7 +81,8 @@ server.get('/searchVrscans', (req, res) => {
 
     const paginatedResults = filteredVrScans.slice(start, end);
     res.send(paginatedResults);
-})
+});
+
 server.use(router)
 
 server.listen(3000, () => {
