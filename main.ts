@@ -25,7 +25,6 @@ const rules = (auth as any).rewriter({
 // required by json-server-auth
 (server as any).db = router.db
 
-
 function readNumberQueryParam(name: string, query: qs.ParsedQs): Set<number> {
     if (!query[name]) return new Set();
     const elements = Array.isArray(query[name]) ? query[name] : [query[name]];
@@ -63,7 +62,6 @@ server.get('/searchVrscans', (req, res) => {
 
     let filteredVrScans = filterVrscans(data.vrscans, { colors, materials, tags });
 
-    // Add search filtering
     if (searchTerm) {
         filteredVrScans = filteredVrScans.filter(vrscan =>
             vrscan.name.toLowerCase().includes(searchTerm)
